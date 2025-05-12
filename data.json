@@ -1,0 +1,28 @@
+{
+    "dataanggota" : [
+        {
+            "Id": 109012835,
+            "Nama": "Budiono Siregar",
+            "Tanggal" : "10-02-2008",  
+            "Status" : "Pekerja_Tetap"
+        }
+        ,{
+            "Id": 109012818,
+            "Nama": "choco minto",
+            "Tanggal" : "11-05-2010",  
+            "Status" : "Pekerja_Tetap"
+        }
+        ,{
+            "Id": 109012635,
+            "Nama": "kapal karam 1551",
+            "Tanggal" : "08-12-2011",  
+            "Status" : "Pekerja_Tetap"
+        }
+        ,{
+            "Id": 109012698,
+            "Nama": "mas agus kediri",
+            "Tanggal" : "03-04-2015",  
+            "Status" : "Pekerja_Tetap"
+        }
+    ]
+}

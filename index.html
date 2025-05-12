@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container-tabel">
+        <h2>Tabel Dom Js</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th class="no">No</th>
+                    <th>Id</th>
+                    <th>Nama</th>
+                    <th>Tanggal</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="bodyTabel"> 
+            </tbody>
+        </table>
+        <div class="from" id="form">
+            <div class="header">
+                <label>Edit Form</label>
+                <img src="asset/close.png" width="12px" alt="" id="closebutton">
+            </div>
+            <div class="input">
+                <input type="text" id="id" placeholder="Id" readonly>
+                <input type="text" id="nama" placeholder="Nama">
+                <input type="date" id="tanggal" placeholder="Tanggal">
+                <select id="Status">
+                    <option value="Pekerja_Tetap">Pekerja Tetap</option>
+                    <option value="Pekerja_Kontrak">Pekerja Kontrak</option>
+                </select>
+            </div>
+            <button onclick="saveEdit()">Save</button>
+        </div>
+        <div class="overlay" id="overlay"></div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
