@@ -1,32 +1,37 @@
-// Initialize variables
+// Inisialisasi variabel
 let database = null;
 const tabelbody = document.getElementById('bodyTabel');
 const editform = document.getElementById('form');
 const overlay = document.getElementById('overlay');
 
-// Add event listener to close button
-overlay.addEventListener('click', close);
-
-// Fetch data from JSON file
+// Ambil data dari JSON dan simpan ke localStorage
 fetch('data.json')
   .then(response => response.json())
   .then(data => {
     localStorage.setItem('data', JSON.stringify(data));
+    loaddata(); // Load data setelah selesai fetch
   })
   .catch(error => console.error('Error loading JSON:', error));
 
-// Get data from local storage
+// Ambil data dari localStorage
+let mydata = JSON.parse(localStorage.getItem('data'));
 
-// Function to load data into table
+// Fungsi untuk memuat data ke tabel
 function loaddata() {
-  
-  let mydata = JSON.parse(localStorage.getItem('data'));
+  mydata = JSON.parse(localStorage.getItem('data'));
+
+  // Pastikan semua ID bertipe number
+  mydata.dataanggota = mydata.dataanggota.map(user => ({
+    ...user,
+    Id: parseInt(user.Id)
+  }));
+
   tabelbody.innerHTML = '';
-  let a = 1;
+  let no = 1;
   mydata.dataanggota.forEach(user => {
     tabelbody.innerHTML += `
       <tr>
-        <td>${a}</td>
+        <td>${no++}</td>
         <td>${user.Id}</td>
         <td>${user.Nama}</td>
         <td>${user.Tanggal}</td>
@@ -37,30 +42,34 @@ function loaddata() {
         </td>
       </tr>
     `;
-    a++;
   });
 }
 
-// Variable to store edit ID
+// Variabel untuk menyimpan ID yang sedang diedit
 let editId = null;
 
-// Function to edit data
+// Fungsi untuk menutup form
+function close() {
+  editform.style.display = 'none';
+  overlay.style.display = 'none';
+}
+
+// Fungsi untuk membuka form edit
 function edit(id) {
-  
-  let mydata = JSON.parse(localStorage.getItem('data'));
+  mydata = JSON.parse(localStorage.getItem('data'));
   editform.style.display = 'flex';
   overlay.style.display = 'block';
 
-  // Clear previous form data
+  editId = parseInt(id); // Pastikan ID berupa number
+
+  const userData = mydata.dataanggota.find(user => parseInt(user.Id) === editId);
+
+  // Bangun ulang form edit
   editform.innerHTML = `
     <div class="header">
         <label>Edit Form</label>
         <img src="asset/close.png" width="12px" alt="" id="closebutton">
     </div>
-  `;
-
-  // Add form fields
-  editform.innerHTML += `
     <div class="input">
       <input type="text" id="id" placeholder="Id" readonly>
       <input type="text" id="nama" placeholder="Nama">
@@ -73,65 +82,70 @@ function edit(id) {
     <button onclick="saveEdit()">Save</button>
   `;
 
-  
-  const closebutton = document.getElementById('closebutton');
-  closebutton.addEventListener('click', close);
-
-  editId = id;
-  const userData = mydata.dataanggota.find(user => user.Id === id);
+  // Event close
+  document.getElementById('closebutton').addEventListener('click', close);
 
   if (userData) {
     let [day, month, year] = userData.Tanggal.split("-");
-    let dateObj = new Date(`${month}/${day}/${year}`);
-
-    // Format to YYYY-MM-DD
+    let dateObj = new Date(`${year}-${month}-${day}`);
     let formattedDate = dateObj.toISOString().split('T')[0];
 
-    document.getElementById('id').value = id;
+    document.getElementById('id').value = userData.Id;
     document.getElementById('nama').value = userData.Nama;
-    document.getElementById('tanggal').value = formattedDate; // Correct format
+    document.getElementById('tanggal').value = formattedDate;
     document.getElementById('Status').value = userData.Status;
   }
 }
 
-// Function to add new data
-function add() {
-  
-  let mydata = JSON.parse(localStorage.getItem('data'));
-  const newId = document.getElementById('id').value;
+// Fungsi untuk menyimpan hasil edit
+function saveEdit() {
+  mydata = JSON.parse(localStorage.getItem('data'));
   const newNama = document.getElementById('nama').value;
-  const newTanggal = document.getElementById('tanggal').value; // Correct format
+  const newTanggal = document.getElementById('tanggal').value;
   const newStatus = document.getElementById('Status').value;
 
-  if (newNama && newTanggal && newStatus) {
-    mydata.dataanggota.push({
-      Id: newId,
-      Nama: newNama,
-      Tanggal: newTanggal,
-      Status: newStatus
-    });
+  let dateObj = new Date(newTanggal);
+  let formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}-${dateObj.getFullYear()}`;
+
+  const index = mydata.dataanggota.findIndex(user => parseInt(user.Id) === parseInt(editId));
+  if (index !== -1) {
+    mydata.dataanggota[index].Nama = newNama;
+    mydata.dataanggota[index].Tanggal = formattedDate;
+    mydata.dataanggota[index].Status = newStatus;
 
     localStorage.setItem('data', JSON.stringify(mydata));
-    close()
+    close();
     loaddata();
+  } else {
+    console.warn('ID tidak ditemukan:', editId);
   }
 }
 
-// Function to open form for adding new data
+// Fungsi untuk menghapus data
+function hapus(id) {
+  mydata = JSON.parse(localStorage.getItem('data'));
+  const index = mydata.dataanggota.findIndex(user => parseInt(user.Id) === parseInt(id));
+  if (index !== -1) {
+    mydata.dataanggota.splice(index, 1);
+    localStorage.setItem('data', JSON.stringify(mydata));
+    loaddata();
+  } else {
+    console.warn('ID tidak ditemukan saat hapus:', id);
+  }
+}
+
+// Fungsi untuk membuka form tambah data
 function openform() {
+  mydata = JSON.parse(localStorage.getItem('data'));
   editform.style.display = 'flex';
   overlay.style.display = 'block';
 
-  // Clear previous form data
+  // Bangun ulang form
   editform.innerHTML = `
     <div class="header">
         <label>Add Form</label>
         <img src="asset/close.png" width="12px" alt="" id="closebutton">
     </div>
-  `;
-
-  // Add form fields
-  editform.innerHTML += `
     <div class="input">
       <input type="text" id="id" placeholder="Id" readonly>
       <input type="text" id="nama" placeholder="Nama">
@@ -143,61 +157,41 @@ function openform() {
     </div>
     <button onclick="add()">Save</button>
   `;
-  
-  const closebutton = document.getElementById('closebutton');
-  closebutton.addEventListener('click', close);
 
-  const newId = Math.max(...mydata.dataanggota.map(user => user.Id)) + 1;
+  document.getElementById('closebutton').addEventListener('click', close);
+
+  // Atur ID baru dan tanggal hari ini
+  const newId = Math.max(...mydata.dataanggota.map(user => parseInt(user.Id))) + 1;
   document.getElementById('id').value = newId;
 
   let dateObj = new Date();
-
-    // Format to YYYY-MM-DD
   let formattedDate = dateObj.toISOString().split('T')[0];
   document.getElementById('tanggal').value = formattedDate;
 }
 
-// Function to save edited data
-function saveEdit() {
-  
-  let mydata = JSON.parse(localStorage.getItem('data'));
+// Fungsi untuk menambahkan data baru
+function add() {
+  mydata = JSON.parse(localStorage.getItem('data'));
+  const newId = parseInt(document.getElementById('id').value);
   const newNama = document.getElementById('nama').value;
   const newTanggal = document.getElementById('tanggal').value;
   const newStatus = document.getElementById('Status').value;
 
-  let dateObj = new Date(newTanggal);
+  if (newNama && newTanggal && newStatus) {
+    let dateObj = new Date(newTanggal);
+    let formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}-${dateObj.getFullYear()}`;
 
-  // Convert to YYYY-MM-DD
-  let formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}-${dateObj.getFullYear()}`;
-  const index = mydata.dataanggota.findIndex(user => user.Id === editId);
-  if (index !== -1) {
-    mydata.dataanggota[index].Nama = newNama;
-    mydata.dataanggota[index].Tanggal = formattedDate;
-    mydata.dataanggota[index].Status = newStatus;
+    mydata.dataanggota.push({
+      Id: newId,
+      Nama: newNama,
+      Tanggal: formattedDate,
+      Status: newStatus
+    });
 
     localStorage.setItem('data', JSON.stringify(mydata));
     close();
     loaddata();
+  } else {
+    alert('Semua field harus diisi!');
   }
 }
-
-// Function to delete data
-function hapus(id) {
-  
-  let mydata = JSON.parse(localStorage.getItem('data'));
-  const index = mydata.dataanggota.findIndex(user => user.Id === id);
-  if (index !== -1) {
-    mydata.dataanggota.splice(index, 1);
-    localStorage.setItem('data', JSON.stringify(mydata));
-    loaddata();
-  }
-}
-
-// Function to close form
-function close() {
-  editform.style.display = 'none';
-  overlay.style.display = 'none';
-}
-
-// Load data into table
-loaddata();

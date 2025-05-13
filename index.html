@@ -1,40 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Counter App</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Counter App</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container-tabel">
-        <div class="header-Tabel">
-            <h2>Tabel Dom Js</h2>
-            <button onclick="openform()">Add +</button>
-        </div>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th class="no">No</th>
-                    <th>Id</th>
-                    <th>Nama</th>
-                    <th>Tanggal</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="bodyTabel"> 
-            </tbody>
-        </table>
-        <div class="from" id="form">
-            <div class="header">
-                <label>Edit Form</label>
-                <img src="asset/close.png" width="12px" alt="" id="closebutton">
-            </div>
-            
-        </div>
-        <div class="overlay" id="overlay"></div>
+  <div class="container-tabel">
+    <div class="header-Tabel">
+      <h2>Tabel Dom Js</h2>
+      <button onclick="openform()">Add +</button>
     </div>
-    <script src="main.js"></script>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th class="no">No</th>
+          <th>Id</th>
+          <th>Nama</th>
+          <th>Tanggal</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="bodyTabel"></tbody>
+    </table>
+
+    <!-- Form popup (akan diisi lewat JavaScript) -->
+    <div class="from" id="form" style="display: none;"></div>
+
+    <!-- Overlay hitam -->
+    <div class="overlay" id="overlay" style="display: none;"></div>
+  </div>
+
+  <script src="main.js"></script>
 </body>
 </html>
