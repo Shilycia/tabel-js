@@ -16,10 +16,11 @@ fetch('data.json')
   .catch(error => console.error('Error loading JSON:', error));
 
 // Get data from local storage
-let mydata = JSON.parse(localStorage.getItem('data'));
 
 // Function to load data into table
 function loaddata() {
+  
+  let mydata = JSON.parse(localStorage.getItem('data'));
   tabelbody.innerHTML = '';
   let a = 1;
   mydata.dataanggota.forEach(user => {
@@ -45,6 +46,8 @@ let editId = null;
 
 // Function to edit data
 function edit(id) {
+  
+  let mydata = JSON.parse(localStorage.getItem('data'));
   editform.style.display = 'flex';
   overlay.style.display = 'block';
 
@@ -93,7 +96,8 @@ function edit(id) {
 
 // Function to add new data
 function add() {
-
+  
+  let mydata = JSON.parse(localStorage.getItem('data'));
   const newId = document.getElementById('id').value;
   const newNama = document.getElementById('nama').value;
   const newTanggal = document.getElementById('tanggal').value; // Correct format
@@ -155,6 +159,8 @@ function openform() {
 
 // Function to save edited data
 function saveEdit() {
+  
+  let mydata = JSON.parse(localStorage.getItem('data'));
   const newNama = document.getElementById('nama').value;
   const newTanggal = document.getElementById('tanggal').value;
   const newStatus = document.getElementById('Status').value;
@@ -177,6 +183,8 @@ function saveEdit() {
 
 // Function to delete data
 function hapus(id) {
+  
+  let mydata = JSON.parse(localStorage.getItem('data'));
   const index = mydata.dataanggota.findIndex(user => user.Id === id);
   if (index !== -1) {
     mydata.dataanggota.splice(index, 1);
