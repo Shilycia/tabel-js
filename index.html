@@ -8,7 +8,10 @@
 </head>
 <body>
     <div class="container-tabel">
-        <h2>Tabel Dom Js</h2>
+        <div class="header-Tabel">
+            <h2>Tabel Dom Js</h2>
+            <button onclick="openform()">Add +</button>
+        </div>
         <table border="1">
             <thead>
                 <tr>
@@ -28,16 +31,7 @@
                 <label>Edit Form</label>
                 <img src="asset/close.png" width="12px" alt="" id="closebutton">
             </div>
-            <div class="input">
-                <input type="text" id="id" placeholder="Id" readonly>
-                <input type="text" id="nama" placeholder="Nama">
-                <input type="date" id="tanggal" placeholder="Tanggal">
-                <select id="Status">
-                    <option value="Pekerja_Tetap">Pekerja Tetap</option>
-                    <option value="Pekerja_Kontrak">Pekerja Kontrak</option>
-                </select>
-            </div>
-            <button onclick="saveEdit()">Save</button>
+            
         </div>
         <div class="overlay" id="overlay"></div>
     </div>
