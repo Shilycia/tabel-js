@@ -31,8 +31,8 @@ function loaddata() {
         <td>${user.Tanggal}</td>
         <td>${user.Status.replace('_', ' ')}</td>
         <td>
-          <button onclick="edit(${user.Id})">Edit</button>
-          <button onclick="hapus(${user.Id})">Hapus</button>
+          <button onclick="edit(${user.Id})" class="edit">Edit</button>
+          <button onclick="hapus(${user.Id})" class="hapus">Hapus</button>
         </td>
       </tr>
     `;
