@@ -121,7 +121,7 @@ function openform() {
   // Clear previous form data
   editform.innerHTML = `
     <div class="header">
-        <label>Edit Form</label>
+        <label>Add Form</label>
         <img src="asset/close.png" width="12px" alt="" id="closebutton">
     </div>
   `;
