@@ -1,12 +1,11 @@
 // Initialize variables
 let database = null;
 const tabelbody = document.getElementById('bodyTabel');
-const closebutton = document.getElementById('closebutton');
 const editform = document.getElementById('form');
 const overlay = document.getElementById('overlay');
 
 // Add event listener to close button
-closebutton.addEventListener('click', close);
+overlay.addEventListener('click', close);
 
 // Fetch data from JSON file
 fetch('data.json')
@@ -50,7 +49,12 @@ function edit(id) {
   overlay.style.display = 'block';
 
   // Clear previous form data
-  editform.innerHTML = '';
+  editform.innerHTML = `
+    <div class="header">
+        <label>Edit Form</label>
+        <img src="asset/close.png" width="12px" alt="" id="closebutton">
+    </div>
+  `;
 
   // Add form fields
   editform.innerHTML += `
@@ -65,6 +69,10 @@ function edit(id) {
     </div>
     <button onclick="saveEdit()">Save</button>
   `;
+
+  
+  const closebutton = document.getElementById('closebutton');
+  closebutton.addEventListener('click', close);
 
   editId = id;
   const userData = mydata.dataanggota.find(user => user.Id === id);
@@ -131,9 +139,18 @@ function openform() {
     </div>
     <button onclick="add()">Save</button>
   `;
+  
+  const closebutton = document.getElementById('closebutton');
+  closebutton.addEventListener('click', close);
 
   const newId = Math.max(...mydata.dataanggota.map(user => user.Id)) + 1;
   document.getElementById('id').value = newId;
+
+  let dateObj = new Date();
+
+    // Format to YYYY-MM-DD
+  let formattedDate = dateObj.toISOString().split('T')[0];
+  document.getElementById('tanggal').value = formattedDate;
 }
 
 // Function to save edited data
